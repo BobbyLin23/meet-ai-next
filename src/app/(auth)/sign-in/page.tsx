@@ -61,6 +61,26 @@ export default function Page() {
     )
   }
 
+  function onSocial(provider: 'google' | 'github') {
+    setError('')
+    setLoading(true)
+    authClient.signIn.social(
+      {
+        provider,
+        callbackURL: '/',
+      },
+      {
+        onSuccess: () => {
+          setLoading(false)
+        },
+        onError: ({ error }) => {
+          setError(error.message)
+          setLoading(false)
+        },
+      }
+    )
+  }
+
   return (
     <div className="flex flex-col gap-y-6">
       <Card className="overflow-hidden p-0">
@@ -129,6 +149,7 @@ export default function Page() {
                     variant="outline"
                     className="w-full"
                     disabled={loading}
+                    onClick={() => onSocial('google')}
                   >
                     <FaGoogle className="mr-2 size-4" />
                     Google
@@ -137,6 +158,7 @@ export default function Page() {
                     variant="outline"
                     className="w-full"
                     disabled={loading}
+                    onClick={() => onSocial('github')}
                   >
                     <FaGithub className="mr-2 size-4" />
                     Github
