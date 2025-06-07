@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/sidebar'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
-import { DashboardUserButton } from '@/feature/dashboard/components/dashboard-user-button'
+import { DashboardUserButton } from '@/app/(dashboard)/_components/dashboard-user-button'
 
 const firstSection = [
   {
