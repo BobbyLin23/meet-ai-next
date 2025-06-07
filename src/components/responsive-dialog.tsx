@@ -6,6 +6,7 @@ import { useIsMobile } from '@/hooks/use-mobile'
 import {
   Drawer,
   DrawerContent,
+  DrawerHeader,
   DrawerTitle,
   DrawerDescription,
 } from '@/components/ui/drawer'
@@ -55,7 +56,7 @@ export const ResponsiveDialog = ({
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        <div className="p-4">{children}</div>
+        <div>{children}</div>
       </DialogContent>
     </Dialog>
   )
