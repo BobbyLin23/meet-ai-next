@@ -7,7 +7,7 @@ interface EmptyStateProps {
 
 export const EmptyState = ({ title, description }: EmptyStateProps) => {
   return (
-    <div className="flex flex-1 items-center justify-center px-8 py-4">
+    <div className="flex flex-col items-center justify-center">
       <Image src="/empty.svg" alt="Empty state" height={240} width={240} />
       <div className="mx-auto flex max-w-md flex-col gap-y-2 text-center">
         <h6 className="text-lg font-medium">{title}</h6>
