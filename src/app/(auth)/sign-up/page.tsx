@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { z } from 'zod'
@@ -18,8 +19,12 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { authClient } from '@/lib/auth-client'
 
 export default function Page() {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
   const formSchema = z
     .object({
       name: z.string().min(1, 'Name is required'),
@@ -44,7 +49,45 @@ export default function Page() {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    setLoading(true)
+    setError('')
+    authClient.signUp.email(
+      {
+        name: values.name,
+        email: values.email,
+        password: values.password,
+        callbackURL: '/',
+      },
+      {
+        onSuccess: () => {
+          setLoading(false)
+        },
+        onError: ({ error }) => {
+          setError(error.message)
+          setLoading(false)
+        },
+      }
+    )
+  }
+
+  function onSocial(provider: 'google' | 'github') {
+    setError('')
+    setLoading(true)
+    authClient.signIn.social(
+      {
+        provider,
+        callbackURL: '/',
+      },
+      {
+        onSuccess: () => {
+          setLoading(false)
+        },
+        onError: ({ error }) => {
+          setError(error.message)
+          setLoading(false)
+        },
+      }
+    )
   }
 
   return (
@@ -128,7 +171,7 @@ export default function Page() {
                     name="confirmPassword"
                   />
                 </div>
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full" disabled={loading}>
                   Sign Up
                 </Button>
                 <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:left-0 after:z-0 after:flex after:items-center after:border-t">
@@ -137,11 +180,21 @@ export default function Page() {
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                  <Button variant="outline" className="w-full">
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    disabled={loading}
+                    onClick={() => onSocial('google')}
+                  >
                     <FaGoogle className="mr-2 size-4" />
                     Google
                   </Button>
-                  <Button variant="outline" className="w-full">
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    disabled={loading}
+                    onClick={() => onSocial('github')}
+                  >
                     <FaGithub className="mr-2 size-4" />
                     Github
                   </Button>
