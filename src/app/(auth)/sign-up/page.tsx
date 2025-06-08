@@ -55,7 +55,9 @@ export default function Page() {
             <form className="p-6 md:p-8" onSubmit={form.handleSubmit(onSubmit)}>
               <div className="flex flex-col gap-y-6">
                 <div className="flex flex-col items-center text-center">
-                  <h1 className="text-2xl font-bold">Let's get you started!</h1>
+                  <h1 className="text-2xl font-bold">
+                    Let&apos;s get you started!
+                  </h1>
                   <p className="text-muted-foreground text-balance">
                     Create your account to start using Meet.AI
                   </p>
