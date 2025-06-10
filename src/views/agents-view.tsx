@@ -10,8 +10,11 @@ import { columns } from '@/app/(dashboard)/agents/_components/columns'
 import { EmptyState } from '@/components/empty-state'
 import { useAgentsFilter } from '@/hooks/use-agents-filter'
 import { DataPagination } from '@/app/(dashboard)/agents/_components/data-pagination'
+import { useRouter } from 'next/navigation'
 
 export const AgentsView = () => {
+  const router = useRouter()
+
   const [filters, setFilters] = useAgentsFilter()
 
   const trpc = useTRPC()
@@ -22,7 +25,11 @@ export const AgentsView = () => {
 
   return (
     <div className="flex flex-1 flex-col gap-y-4 px-4 pb-4 md:px-8">
-      <DataTable columns={columns} data={data.items} />
+      <DataTable
+        columns={columns}
+        data={data.items}
+        onRowClick={(row) => router.push(`/agents/${row.id}`)}
+      />
       <DataPagination
         page={filters.page}
         totalPages={data.totalPages}

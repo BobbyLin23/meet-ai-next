@@ -11,6 +11,7 @@ import {
   MAX_PAGE_SIZE,
   MIN_PAGE_SIZE,
 } from '@/constants'
+import { TRPCError } from '@trpc/server'
 
 export const agentsRouter = createTRPCRouter({
   getMany: protectedProcedure
@@ -74,7 +75,16 @@ export const agentsRouter = createTRPCRouter({
           meetingCount: db.$count(agents, eq(agents.userId, ctx.auth.user.id)),
         })
         .from(agents)
-        .where(eq(agents.id, input.id))
+        .where(
+          and(eq(agents.id, input.id), eq(agents.userId, ctx.auth.user.id))
+        )
+
+      if (!data) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Not Found',
+        })
+      }
 
       return data
     }),
