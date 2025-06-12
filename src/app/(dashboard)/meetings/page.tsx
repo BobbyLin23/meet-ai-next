@@ -7,18 +7,22 @@ import MeetingsView, {
   MeetingsViewLoading,
 } from '@/views/meetings-view'
 import { getQueryClient, trpc } from '@/trpc/server'
+import { MeetingsListHeader } from '@/app/(dashboard)/meetings/_components/meetings-list-header'
 
-export default function Page() {
+export default async function Page() {
   const queryClient = getQueryClient()
   void queryClient.prefetchQuery(trpc.meetings.getMany.queryOptions({}))
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense fallback={<MeetingsViewLoading />}>
-        <ErrorBoundary fallback={<MeetingsViewError />}>
-          <MeetingsView />
-        </ErrorBoundary>
-      </Suspense>
-    </HydrationBoundary>
+    <>
+      <MeetingsListHeader />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Suspense fallback={<MeetingsViewLoading />}>
+          <ErrorBoundary fallback={<MeetingsViewError />}>
+            <MeetingsView />
+          </ErrorBoundary>
+        </Suspense>
+      </HydrationBoundary>
+    </>
   )
 }

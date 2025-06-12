@@ -5,7 +5,12 @@ import { TRPCError } from '@trpc/server'
 import { createTRPCRouter, protectedProcedure } from '@/trpc/init'
 import { db } from '@/db'
 import { agents, meetings } from '@/db/schemas'
-import { agentsInsertSchema, agentsUpdateSchema } from '@/lib/schemas'
+import {
+  agentsInsertSchema,
+  agentsUpdateSchema,
+  meetingsInsertSchema,
+  meetingsUpdateSchema,
+} from '@/lib/schemas'
 import {
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
@@ -91,17 +96,17 @@ export const meetingsRouter = createTRPCRouter({
       return data
     }),
   create: protectedProcedure
-    .input(agentsInsertSchema)
+    .input(meetingsInsertSchema)
     .mutation(async ({ input, ctx }) => {
-      const [createdAgent] = await db
-        .insert(agents)
+      const [createdMeeting] = await db
+        .insert(meetings)
         .values({
           ...input,
           userId: ctx.auth.user.id,
         })
         .returning()
 
-      return createdAgent
+      return createdMeeting
     }),
   remove: protectedProcedure
     .input(
@@ -127,23 +132,23 @@ export const meetingsRouter = createTRPCRouter({
       return data
     }),
   update: protectedProcedure
-    .input(agentsUpdateSchema)
+    .input(meetingsUpdateSchema)
     .mutation(async ({ input, ctx }) => {
-      const [updatedAgent] = await db
-        .update(agents)
+      const [updatedMeeting] = await db
+        .update(meetings)
         .set(input)
         .where(
-          and(eq(agents.userId, ctx.auth.user.id), eq(agents.id, input.id))
+          and(eq(meetings.userId, ctx.auth.user.id), eq(meetings.id, input.id))
         )
         .returning()
 
-      if (!updatedAgent) {
+      if (!updatedMeeting) {
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: 'Not Found',
         })
       }
 
-      return updatedAgent
+      return updatedMeeting
     }),
 })

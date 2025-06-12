@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react'
 
 import {
-  CommandDialog,
+  CommandResponsiveDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
@@ -18,7 +18,7 @@ export const DashboardCommand = ({
   setOpen: Dispatch<SetStateAction<boolean>>
 }) => {
   return (
-    <CommandDialog open={open} onOpenChange={setOpen}>
+    <CommandResponsiveDialog open={open} onOpenChange={setOpen}>
       <CommandInput placeholder="Find a meeting or agent" />
       <CommandList>
         <CommandEmpty>No results found</CommandEmpty>
@@ -34,6 +34,6 @@ export const DashboardCommand = ({
           <CommandItem value="settings">Settings</CommandItem>
         </CommandGroup>
       </CommandList>
-    </CommandDialog>
+    </CommandResponsiveDialog>
   )
 }

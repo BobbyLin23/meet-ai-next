@@ -137,7 +137,9 @@ export const AgentForm = ({
               type="button"
               variant="ghost"
               disabled={isPending}
-              onClick={() => {}}
+              onClick={() => {
+                onCancel?.()
+              }}
             >
               Cancel
             </Button>
