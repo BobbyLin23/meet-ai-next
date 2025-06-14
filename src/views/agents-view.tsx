@@ -1,16 +1,16 @@
 'use client'
 
 import { useSuspenseQuery } from '@tanstack/react-query'
+import { useRouter } from 'next/navigation'
 
 import { useTRPC } from '@/trpc/client'
 import { LoadingState } from '@/components/loading-state'
 import { ErrorState } from '@/components/error-state'
-import { DataTable } from '@/app/(dashboard)/agents/_components/data-table'
+import { DataTable } from '@/components/data-table'
 import { columns } from '@/app/(dashboard)/agents/_components/columns'
 import { EmptyState } from '@/components/empty-state'
 import { useAgentsFilter } from '@/hooks/use-agents-filter'
 import { DataPagination } from '@/app/(dashboard)/agents/_components/data-pagination'
-import { useRouter } from 'next/navigation'
 
 export const AgentsView = () => {
   const router = useRouter()

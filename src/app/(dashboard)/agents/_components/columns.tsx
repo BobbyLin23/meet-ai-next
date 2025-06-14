@@ -3,11 +3,11 @@
 import { CornerDownRightIcon, VideoIcon } from 'lucide-react'
 import { ColumnDef } from '@tanstack/react-table'
 
-import { AgentGetOne } from '@/types'
+import { AgentGetMany } from '@/types'
 import { GenerateAvatar } from '@/components/generate-avatar'
 import { Badge } from '@/components/ui/badge'
 
-export const columns: ColumnDef<AgentGetOne>[] = [
+export const columns: ColumnDef<AgentGetMany[number]>[] = [
   {
     accessorKey: 'name',
     header: 'Agent',
