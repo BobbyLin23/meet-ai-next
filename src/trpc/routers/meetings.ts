@@ -5,18 +5,14 @@ import { TRPCError } from '@trpc/server'
 import { createTRPCRouter, protectedProcedure } from '@/trpc/init'
 import { db } from '@/db'
 import { agents, meetings } from '@/db/schemas'
-import {
-  agentsInsertSchema,
-  agentsUpdateSchema,
-  meetingsInsertSchema,
-  meetingsUpdateSchema,
-} from '@/lib/schemas'
+import { meetingsInsertSchema, meetingsUpdateSchema } from '@/lib/schemas'
 import {
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
   MAX_PAGE_SIZE,
   MIN_PAGE_SIZE,
 } from '@/constants'
+import { MeetingStatus } from '@/types'
 
 export const meetingsRouter = createTRPCRouter({
   getMany: protectedProcedure
@@ -29,6 +25,16 @@ export const meetingsRouter = createTRPCRouter({
           .max(MAX_PAGE_SIZE)
           .default(DEFAULT_PAGE_SIZE),
         search: z.string().nullish(),
+        agentId: z.string().nullish(),
+        status: z
+          .enum([
+            MeetingStatus.Upcoming,
+            MeetingStatus.Active,
+            MeetingStatus.Canceled,
+            MeetingStatus.Processing,
+            MeetingStatus.Completed,
+          ])
+          .nullish(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -45,9 +51,11 @@ export const meetingsRouter = createTRPCRouter({
         .where(
           and(
             eq(meetings.userId, ctx.auth.user.id),
-            input?.search
+            input.search
               ? ilike(meetings.name, `%${input.search}%`)
-              : undefined
+              : undefined,
+            input.status ? eq(input.status, meetings.status) : undefined,
+            input.agentId ? eq(meetings.agentId, agents.id) : undefined
           )
         )
         .orderBy(desc(meetings.createdAt), desc(meetings.id))

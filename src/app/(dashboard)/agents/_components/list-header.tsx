@@ -8,6 +8,7 @@ import { NewAgentDialog } from '@/app/(dashboard)/agents/_components/new-agent-d
 import { useAgentsFilter } from '@/hooks/use-agents-filter'
 import { AgentsSearchFilter } from '@/app/(dashboard)/agents/_components/agents-search-filter'
 import { DEFAULT_PAGE } from '@/constants'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 export const ListHeader = () => {
   const [open, setOpen] = useState(false)
@@ -32,15 +33,18 @@ export const ListHeader = () => {
             New Agents
           </Button>
         </div>
-        <div className="flex items-center gap-x-2 p-1">
-          <AgentsSearchFilter />
-          {isAnyFilterModified && (
-            <Button variant="outline" size="sm" onClick={onClearFilters}>
-              <XCircleIcon />
-              Clear
-            </Button>
-          )}
-        </div>
+        <ScrollArea>
+          <div className="flex items-center gap-x-2 p-1">
+            <AgentsSearchFilter />
+            {isAnyFilterModified && (
+              <Button variant="outline" size="sm" onClick={onClearFilters}>
+                <XCircleIcon />
+                Clear
+              </Button>
+            )}
+          </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </div>
       <NewAgentDialog open={open} onOpenChange={setOpen} />
     </>
