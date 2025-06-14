@@ -30,7 +30,7 @@ export const meetingsRouter = createTRPCRouter({
           .enum([
             MeetingStatus.Upcoming,
             MeetingStatus.Active,
-            MeetingStatus.Canceled,
+            MeetingStatus.Cancelled,
             MeetingStatus.Processing,
             MeetingStatus.Completed,
           ])
