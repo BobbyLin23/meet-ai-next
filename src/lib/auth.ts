@@ -24,4 +24,5 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
+  trustedOrigins: ['https://jaybird-light-badger.ngrok-free.app'],
 })
